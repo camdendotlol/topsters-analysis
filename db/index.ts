@@ -1,4 +1,6 @@
-import { DB } from "https://deno.land/x/sqlite/mod.ts";
+import { DB } from "https://deno.land/x/sqlite@v3.7.0/mod.ts";
+
+let connection: null | DB = null
 
 // Get the existing DB or create one if it doesn't exit.
 const init_db = async () => {
@@ -14,18 +16,25 @@ const init_db = async () => {
 }
 
 const get_connection = async () => {
-  await init_db()
+  if (!connection) {
+    await init_db()
+  
+    const db = new DB('db.sqlite')
+  
+    db.execute('DROP TABLE IF EXISTS album_searches')
+  
+    db.execute(`
+      CREATE TABLE album_searches (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        searches INTEGER
+      )
+    `);
 
-  const db = new DB('db.sqlite')
+    connection = db
+  }
 
-  db.execute(`
-    CREATE TABLE IF NOT EXISTS people (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT
-    )
-  `);
-
-  return db
+  return connection
 }
 
 export default get_connection
