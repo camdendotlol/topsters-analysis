@@ -1,23 +1,19 @@
-import { Application, Router } from "https://deno.land/x/oak@v11.1.0/mod.ts";
-import get_connection from './db/index.ts'
-import albumRouter from './controllers/albums/index.ts'
+import { Application, Router } from "https://deno.land/x/oak@v11.1.0/mod.ts"
+import { config } from "https://deno.land/x/dotenv@v3.2.0/mod.ts"
+import searchRouter from './controllers/searches/index.ts'
+import DbSetup from "./db/index.ts"
 
 const app = new Application()
-const db = await get_connection()
+const env = config()
 const router = new Router()
 
-db.execute(`INSERT INTO album_searches (name, searches)
-  VALUES
-    ('jubilee', 900),
-    ('ok computer', 712),
-    ('highway 61 revisited', 200)
-`)
+// Set up the database
+await DbSetup()
 
-router
-  .get('/', (context) => {
-    const people = db.query('SELECT * FROM albums;')
-    context.response.body = people
-  })
+if (!env['API_KEY']) {
+  console.error('Error: Need to set API_KEY environment variable.')
+  Deno.exit(1)
+}
 
 app.use(async (ctx, next) => {
   await next();
@@ -25,8 +21,21 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.request.method} ${ctx.request.url} - ${rt}`)
 });
 
-app.use(router.routes())
-app.use(albumRouter.routes())
+// Require API key for anything other than GET
+app.use(async (ctx, next) => {
+  if (ctx.request.method !== 'GET') {
+    const token = ctx.request.headers.get('Authorization')
+  
+    if (!token || token !== env['API_KEY']) {
+      ctx.response.status = 401
+      return ctx.response.body = { error: 'Missing or invalid API key' }
+    }
+  }
+
+  await next();
+})
+
+app.use(searchRouter.routes())
 app.use(router.allowedMethods())
 
 await app.listen({ port: 8000 })
