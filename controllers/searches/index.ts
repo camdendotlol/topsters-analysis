@@ -1,5 +1,6 @@
 import { Router } from 'https://deno.land/x/oak@v11.1.0/mod.ts'
 import { DB } from 'https://deno.land/x/sqlite@v3.7.0/mod.ts'
+import { dbPath } from "../../db/index.ts";
 import { searchTypes, timeframeQueries } from '../../lib/searches.ts'
 
 const router = new Router()
@@ -21,7 +22,7 @@ router
       return ctx.response.body = { error: 'invalid search type' }
     }
 
-    const db = new DB('db.sqlite')
+    const db = new DB(dbPath)
 
     const searches = db.queryEntries<{ query: string, count: number }>(
       `SELECT query, COUNT(*) AS count
@@ -47,10 +48,10 @@ router
 
     const data = await ctx.request.body({ type: 'json' }).value
     
-    if (!data?.query) {
+    if (!data?.query || data.query === '') {
       ctx.response.body = { error: 'missing query' }
     } else {
-      const db = new DB('db.sqlite')
+      const db = new DB(dbPath)
       
       db.query(
         "INSERT INTO searches (query, type) VALUES (?, ?)", [data.query.toLowerCase(), type]

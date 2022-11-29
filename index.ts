@@ -27,6 +27,7 @@ app.use(async (ctx, next) => {
     const token = ctx.request.headers.get('Authorization')
   
     if (!token || token !== env['API_KEY']) {
+      console.log('Recieved request with invalid or missing API key.')
       ctx.response.status = 401
       return ctx.response.body = { error: 'Missing or invalid API key' }
     }
@@ -38,6 +39,10 @@ app.use(async (ctx, next) => {
 app.use(searchRouter.routes())
 app.use(router.allowedMethods())
 
-await app.listen({ port: 8000 })
+if (env['ENVIRONMENT'] === 'development') {
+  await app.listen({ port: 8000, secure: false })
+} else {
+  await app.listen({ port: 8000 })
+}
 
 console.log("Listening on http://localhost:8000")
