@@ -29,7 +29,8 @@ router
       FROM searches
       WHERE type = ? AND ${timeframeQueries[timeframe]}
       GROUP BY query
-      ORDER BY count DESC;`,
+      ORDER BY count DESC
+      LIMIT 100;`,
       [type]
     )
 
