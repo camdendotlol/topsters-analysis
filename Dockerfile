@@ -1,7 +1,5 @@
 FROM denoland/deno:latest
 
-VOLUME /opt/topster-stats/data
-
 EXPOSE 8000
 WORKDIR /app
 

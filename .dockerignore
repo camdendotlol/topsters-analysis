@@ -1,0 +1,5 @@
+# flyctl launch added from .gitignore
+**/.docker.env
+**/.env
+**/app
+**/db.sqlite
