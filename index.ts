@@ -15,6 +15,7 @@ if (Object.keys(env).length === 0) {
   env['API_KEY'] = Deno.env.get("API_KEY") || ''
   env['DB_DIR'] = Deno.env.get("DB_DIR") || ''
   env['ENVIRONMENT'] = Deno.env.get("ENVIRONMENT") || ''
+  env['PORT'] = Deno.env.get("PORT") || '8000'
 }
 
 const router = new Router()
@@ -53,10 +54,12 @@ app.use(async (ctx, next) => {
 app.use(searchRouter.routes())
 app.use(router.allowedMethods())
 
+console.log(`Listening on port ${env['PORT']}...`)
+
 if (env['ENVIRONMENT'] === 'development') {
-  await app.listen({ port: 8000, secure: false })
+  await app.listen({ port: parseInt(env['PORT']), secure: false })
 } else {
-  await app.listen({ port: 8000 })
+  await app.listen({ port: parseInt(env['PORT']) })
 }
 
 console.log("Listening on http://localhost:8000")
