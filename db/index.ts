@@ -1,5 +1,5 @@
 import { config } from "https://deno.land/x/dotenv@v3.2.0/mod.ts";
-import * as path from "https://deno.land/std/path/mod.ts";
+import * as path from "https://deno.land/std@0.166.0/path/mod.ts";
 import { DB } from "https://deno.land/x/sqlite@v3.7.0/mod.ts";
 
 const env = config()
