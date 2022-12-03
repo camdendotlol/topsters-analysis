@@ -7,7 +7,7 @@ processes = []
 
 [env]
   ENVIRONMENT = "development"
-  DB_DIR = "/data/stats"
+  DB_DIR = "/data"
   PORT = 8000
 
 [mounts]
