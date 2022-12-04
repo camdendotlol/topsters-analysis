@@ -1,10 +1,8 @@
-import { config } from "https://deno.land/x/dotenv@v3.2.0/mod.ts";
 import * as path from "https://deno.land/std@0.166.0/path/mod.ts";
 import { DB } from "https://deno.land/x/sqlite@v3.7.0/mod.ts";
+import env from '../lib/config.ts'
 
-const env = config()
-
-export const dbPath = path.format({ dir: env['DB_DIR'], name: 'db.sqlite'})
+export const dbPath = path.format({ root: '/', dir: env['DB_DIR'], name: 'db.sqlite'})
 
 // Get the existing DB or create one if it doesn't exit.
 const DbSetup = async () => {
