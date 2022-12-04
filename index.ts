@@ -51,6 +51,11 @@ app.use(async (ctx, next) => {
   await next();
 })
 
+router.get('/', (ctx) => {
+  ctx.response.body = 'Something cool is coming here soon!'
+})
+
+app.use(router.routes())
 app.use(searchRouter.routes())
 app.use(router.allowedMethods())
 
