@@ -9,8 +9,10 @@ export const dbPath = path.format({ dir: env['DB_DIR'], name: 'db.sqlite'})
 // Get the existing DB or create one if it doesn't exit.
 const DbSetup = async () => {
   try {
+    console.log(`Attemption to open database at ${dbPath}`)
     await Deno.open(dbPath, { read:true })
   } catch (error) {
+    console.log('No existing database found. Creating a new one.')
     if (error instanceof Deno.errors.NotFound) {
       await Deno.create(dbPath)
     }
