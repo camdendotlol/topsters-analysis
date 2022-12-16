@@ -38,7 +38,7 @@ export const serveHomepage = () => {
         <tr>
           <th scope="row">${index + 1}</th>
           <td>${item.count}</td>
-          <td>${decodeURIComponent(item.query)}</td>
+          <td>${item.query.replace(/%20/g, ' ')}</td>
         </tr>
       `
     )).join('')
