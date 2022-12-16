@@ -11,7 +11,9 @@ const homepage = `
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
 <body style="background:black">
-  <main class="container" style="margin-top:20vh">
+  <main class="container" style="margin-top:60px">
+    <h1 class="text-primary text-center">Monthly music searches</h1>
+    <p class="text-primary text-center text-muted">(more coming soon)</p>
     <table class="table table-dark table-striped">
       <thead>
         <th scope="col">#</th>
