@@ -1,7 +1,7 @@
 import { Router } from 'https://deno.land/x/oak@v11.1.0/mod.ts'
 import { DB } from 'https://deno.land/x/sqlite@v3.7.0/mod.ts'
 import { dbPath } from "../../db/index.ts";
-import { searchTypes, timeframeQueries } from '../../lib/searches.ts'
+import { search, searchTypes, timeframeQueries } from '../../lib/searches.ts'
 
 const router = new Router()
 
@@ -22,19 +22,7 @@ router
       return ctx.response.body = { error: 'invalid search type' }
     }
 
-    const db = new DB(dbPath)
-
-    const searches = db.queryEntries<{ query: string, count: number }>(
-      `SELECT query, COUNT(*) AS count
-      FROM searches
-      WHERE type = ? AND ${timeframeQueries[timeframe]}
-      GROUP BY query
-      ORDER BY count DESC
-      LIMIT 100;`,
-      [type]
-    )
-
-    db.close()
+    const searches = search(type, timeframe )
 
     ctx.response.body = { data: searches }
   })

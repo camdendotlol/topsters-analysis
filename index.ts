@@ -2,6 +2,7 @@ import { Application, Router } from "https://deno.land/x/oak@v11.1.0/mod.ts"
 import searchRouter from './controllers/searches/index.ts'
 import DbSetup from "./db/index.ts"
 import env from "./lib/config.ts";
+import { serveHomepage } from "./lib/client.ts";
 
 const app = new Application()
 
@@ -39,7 +40,7 @@ app.use(async (ctx, next) => {
 })
 
 router.get('/', (ctx) => {
-  ctx.response.body = 'Something cool is coming here soon!'
+  ctx.response.body = serveHomepage()
 })
 
 app.use(router.routes())
