@@ -32,15 +32,16 @@ const homepage = `
 export const serveHomepage = () => {
   const searches = search('music', 'monthly')
 
-  const table = searches.map((item: SearchItem, index) => (
-    `
-      <tr>
-        <th scope="row">${index + 1}</th>
-        <td>${item.count}</td>
-        <td>${item.query}</td>
-      </tr>
-    `
-  )).join('')
+  const table = searches
+    .map((item: SearchItem, index) => (
+      `
+        <tr>
+          <th scope="row">${index + 1}</th>
+          <td>${item.count}</td>
+          <td>${decodeURIComponent(item.query)}</td>
+        </tr>
+      `
+    )).join('')
 
   return homepage.replace('{data}', table)
 }
