@@ -1,16 +1,33 @@
-import { config } from "https://deno.land/x/dotenv@v3.2.0/mod.ts";
+import { load } from "https://deno.land/std@0.218.2/dotenv/mod.ts";
 
-const env = config()
+await load({ export: true })
 
-// Apparently Deno's version of dotenv literally ONLY
-// looks for the .env file, so you're screwed if you
-// try to set normal environment variables.
-// That stupid shortcoming is addressed below.
-if (Object.keys(env).length === 0) {
-  env['API_KEY'] = Deno.env.get("API_KEY") || ''
-  env['DB_DIR'] = Deno.env.get("DB_DIR") || ''
-  env['ENVIRONMENT'] = Deno.env.get("ENVIRONMENT") || ''
-  env['PORT'] = Deno.env.get("PORT") || '8000'
+// It's safe to typecast these as long as we keep the checks below!
+const config = {
+  apiKey: Deno.env.get('API_KEY') as string,
+  dbDir: Deno.env.get('DB_DIR') as string,
+  environment: Deno.env.get('ENVIRONMENT') as string,
+  port: Deno.env.get('PORT') as string
 }
 
-export default env
+if (!config.apiKey) {
+  console.error('Error: Need to set API_KEY environment variable.')
+  Deno.exit(1)
+}
+
+if (!config.dbDir) {
+  console.error('Error: Need to set DB_DIR environment variable.')
+  Deno.exit(1)
+}
+
+if (!config.environment) {
+  console.error('Error: Need to set ENVIRONMENT environment variable.')
+  Deno.exit(1)
+}
+
+if (!config.port) {
+  console.error('Error: Need to set PORT environment variable.')
+  Deno.exit(1)
+}
+
+export default config

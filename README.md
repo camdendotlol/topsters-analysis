@@ -6,9 +6,13 @@ It will offer charts and graphs to visualize the latest search trends over custo
 
 ## Stack
 
-Topsters Stats uses [Deno](https://deno.land) with the [oak](https://deno.land/x/oak@v11.1.0/mod.ts) package for routing and the [sqlite](https://deno.land/x/sqlite@v3.7.0) package for interacting with the SQLite database. I've tried to keep it lightweight because it's not going to become anything fancy.
+Topsters Stats uses [Deno](https://deno.land) with the [oak](https://deno.land/x/oak) package for routing and the [sqlite](https://deno.land/x/sqlite) package for interacting with the SQLite database. I've tried to keep it lightweight because it's not going to become anything fancy.
 
 At the moment I haven't begun on the frontend, but I want to try something a little different. Maybe Svelte, Remix, or just a really spartan HTML page.
+
+## Backups
+
+Download the latest database from the Fly app with `fly ssh sftp get -a topster-stats /data/db.sqlite`.
 
 ## License
 

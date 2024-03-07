@@ -1,4 +1,4 @@
-import { DB } from "https://deno.land/x/sqlite@v3.7.0/mod.ts";
+import { DB } from "https://deno.land/x/sqlite@v3.8/mod.ts";
 import { dbPath } from "../db/index.ts";
 
 export const searchTypes = [
